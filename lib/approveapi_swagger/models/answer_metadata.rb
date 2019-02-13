@@ -14,27 +14,27 @@ require 'date'
 
 module ApproveAPISwagger
   class AnswerMetadata
-    attr_accessor :operating_system
-
     attr_accessor :ip_address
 
     attr_accessor :browser
 
+    attr_accessor :operating_system
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'operating_system' => :'operating_system',
         :'ip_address' => :'ip_address',
-        :'browser' => :'browser'
+        :'browser' => :'browser',
+        :'operating_system' => :'operating_system'
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'operating_system' => :'String',
         :'ip_address' => :'String',
-        :'browser' => :'String'
+        :'browser' => :'String',
+        :'operating_system' => :'String'
       }
     end
 
@@ -46,16 +46,16 @@ module ApproveAPISwagger
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
 
-      if attributes.has_key?(:'operating_system')
-        self.operating_system = attributes[:'operating_system']
-      end
-
       if attributes.has_key?(:'ip_address')
         self.ip_address = attributes[:'ip_address']
       end
 
       if attributes.has_key?(:'browser')
         self.browser = attributes[:'browser']
+      end
+
+      if attributes.has_key?(:'operating_system')
+        self.operating_system = attributes[:'operating_system']
       end
     end
 
@@ -77,9 +77,9 @@ module ApproveAPISwagger
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          operating_system == o.operating_system &&
           ip_address == o.ip_address &&
-          browser == o.browser
+          browser == o.browser &&
+          operating_system == o.operating_system
     end
 
     # @see the `==` method
@@ -91,7 +91,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [operating_system, ip_address, browser].hash
+      [ip_address, browser, operating_system].hash
     end
 
     # Builds the object from hash
@@ -203,7 +203,5 @@ module ApproveAPISwagger
         value
       end
     end
-
   end
-
 end

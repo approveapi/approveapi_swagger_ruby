@@ -14,22 +14,26 @@ require 'date'
 
 module ApproveAPISwagger
   class Prompt
-    attr_accessor :answer
+    # A unique id for this prompt.
+    attr_accessor :id
 
     # The unix timestamp when this prompt was sent.
     attr_accessor :sent_at
 
-    # A unique id for this prompt.
-    attr_accessor :id
+    # The unix timestamp when this prompt can no longer be answered.
+    attr_accessor :expires_at
+
+    attr_accessor :answer
 
     attr_accessor :metadata
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'answer' => :'answer',
-        :'sent_at' => :'sent_at',
         :'id' => :'id',
+        :'sent_at' => :'sent_at',
+        :'expires_at' => :'expires_at',
+        :'answer' => :'answer',
         :'metadata' => :'metadata'
       }
     end
@@ -37,9 +41,10 @@ module ApproveAPISwagger
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'answer' => :'PromptAnswer',
-        :'sent_at' => :'Float',
         :'id' => :'String',
+        :'sent_at' => :'Float',
+        :'expires_at' => :'Float',
+        :'answer' => :'PromptAnswer',
         :'metadata' => :'PromptMetadata'
       }
     end
@@ -52,16 +57,20 @@ module ApproveAPISwagger
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
 
-      if attributes.has_key?(:'answer')
-        self.answer = attributes[:'answer']
+      if attributes.has_key?(:'id')
+        self.id = attributes[:'id']
       end
 
       if attributes.has_key?(:'sent_at')
         self.sent_at = attributes[:'sent_at']
       end
 
-      if attributes.has_key?(:'id')
-        self.id = attributes[:'id']
+      if attributes.has_key?(:'expires_at')
+        self.expires_at = attributes[:'expires_at']
+      end
+
+      if attributes.has_key?(:'answer')
+        self.answer = attributes[:'answer']
       end
 
       if attributes.has_key?(:'metadata')
@@ -73,12 +82,12 @@ module ApproveAPISwagger
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @sent_at.nil?
-        invalid_properties.push('invalid value for "sent_at", sent_at cannot be nil.')
-      end
-
       if @id.nil?
         invalid_properties.push('invalid value for "id", id cannot be nil.')
+      end
+
+      if @sent_at.nil?
+        invalid_properties.push('invalid value for "sent_at", sent_at cannot be nil.')
       end
 
       invalid_properties
@@ -87,8 +96,8 @@ module ApproveAPISwagger
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @sent_at.nil?
       return false if @id.nil?
+      return false if @sent_at.nil?
       true
     end
 
@@ -97,9 +106,10 @@ module ApproveAPISwagger
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          answer == o.answer &&
-          sent_at == o.sent_at &&
           id == o.id &&
+          sent_at == o.sent_at &&
+          expires_at == o.expires_at &&
+          answer == o.answer &&
           metadata == o.metadata
     end
 
@@ -112,7 +122,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [answer, sent_at, id, metadata].hash
+      [id, sent_at, expires_at, answer, metadata].hash
     end
 
     # Builds the object from hash
@@ -224,7 +234,5 @@ module ApproveAPISwagger
         value
       end
     end
-
   end
-
 end

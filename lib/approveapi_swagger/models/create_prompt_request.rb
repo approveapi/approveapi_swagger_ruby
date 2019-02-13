@@ -14,49 +14,54 @@ require 'date'
 
 module ApproveAPISwagger
   class CreatePromptRequest
-    # The body of the approval request to show the user.
-    attr_accessor :body
-
     # The user to send the approval request to. Can be either an email address or a phone number.
     attr_accessor :user
+
+    # The body of the approval request to show the user.
+    attr_accessor :body
 
     # The title of an approval request. Defaults to an empty string.
     attr_accessor :title
 
-    # The reject action text. Defaults to 'Reject'.
-    attr_accessor :reject_text
-
     # The approve action text. Defaults to 'Approve'.
     attr_accessor :approve_text
 
-    attr_accessor :metadata
+    # The reject action text. Defaults to 'Reject'.
+    attr_accessor :reject_text
 
     # If true, the request waits (long-polls) until the user responds to the prompt or more than 10 minutes pass. Defaults to false.
     attr_accessor :long_poll
 
+    # The number of seconds until this request can no longer be answered.
+    attr_accessor :expires_in
+
+    attr_accessor :metadata
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'body' => :'body',
         :'user' => :'user',
+        :'body' => :'body',
         :'title' => :'title',
-        :'reject_text' => :'reject_text',
         :'approve_text' => :'approve_text',
-        :'metadata' => :'metadata',
-        :'long_poll' => :'long_poll'
+        :'reject_text' => :'reject_text',
+        :'long_poll' => :'long_poll',
+        :'expires_in' => :'expires_in',
+        :'metadata' => :'metadata'
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'body' => :'String',
         :'user' => :'String',
+        :'body' => :'String',
         :'title' => :'String',
-        :'reject_text' => :'String',
         :'approve_text' => :'String',
-        :'metadata' => :'PromptMetadata',
-        :'long_poll' => :'BOOLEAN'
+        :'reject_text' => :'String',
+        :'long_poll' => :'BOOLEAN',
+        :'expires_in' => :'Float',
+        :'metadata' => :'PromptMetadata'
       }
     end
 
@@ -68,32 +73,36 @@ module ApproveAPISwagger
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
 
-      if attributes.has_key?(:'body')
-        self.body = attributes[:'body']
-      end
-
       if attributes.has_key?(:'user')
         self.user = attributes[:'user']
+      end
+
+      if attributes.has_key?(:'body')
+        self.body = attributes[:'body']
       end
 
       if attributes.has_key?(:'title')
         self.title = attributes[:'title']
       end
 
-      if attributes.has_key?(:'reject_text')
-        self.reject_text = attributes[:'reject_text']
-      end
-
       if attributes.has_key?(:'approve_text')
         self.approve_text = attributes[:'approve_text']
       end
 
-      if attributes.has_key?(:'metadata')
-        self.metadata = attributes[:'metadata']
+      if attributes.has_key?(:'reject_text')
+        self.reject_text = attributes[:'reject_text']
       end
 
       if attributes.has_key?(:'long_poll')
         self.long_poll = attributes[:'long_poll']
+      end
+
+      if attributes.has_key?(:'expires_in')
+        self.expires_in = attributes[:'expires_in']
+      end
+
+      if attributes.has_key?(:'metadata')
+        self.metadata = attributes[:'metadata']
       end
     end
 
@@ -101,12 +110,12 @@ module ApproveAPISwagger
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @body.nil?
-        invalid_properties.push('invalid value for "body", body cannot be nil.')
-      end
-
       if @user.nil?
         invalid_properties.push('invalid value for "user", user cannot be nil.')
+      end
+
+      if @body.nil?
+        invalid_properties.push('invalid value for "body", body cannot be nil.')
       end
 
       invalid_properties
@@ -115,8 +124,8 @@ module ApproveAPISwagger
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @body.nil?
       return false if @user.nil?
+      return false if @body.nil?
       true
     end
 
@@ -125,13 +134,14 @@ module ApproveAPISwagger
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          body == o.body &&
           user == o.user &&
+          body == o.body &&
           title == o.title &&
-          reject_text == o.reject_text &&
           approve_text == o.approve_text &&
-          metadata == o.metadata &&
-          long_poll == o.long_poll
+          reject_text == o.reject_text &&
+          long_poll == o.long_poll &&
+          expires_in == o.expires_in &&
+          metadata == o.metadata
     end
 
     # @see the `==` method
@@ -143,7 +153,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [body, user, title, reject_text, approve_text, metadata, long_poll].hash
+      [user, body, title, approve_text, reject_text, long_poll, expires_in, metadata].hash
     end
 
     # Builds the object from hash
@@ -255,7 +265,5 @@ module ApproveAPISwagger
         value
       end
     end
-
   end
-
 end

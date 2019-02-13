@@ -14,40 +14,40 @@ require 'date'
 
 module ApproveAPISwagger
   class PromptMetadata
+    # The physical location, like Oakland, CA, of the action.
+    attr_accessor :location
+
     # The date/time of the action.
     attr_accessor :time
-
-    # The operating system initiating the action, i.e. Mac OS X.
-    attr_accessor :operating_system
 
     # The IP address of the computer initiating the action.
     attr_accessor :ip_address
 
-    # The physical location, like Oakland, CA, of the action.
-    attr_accessor :location
-
     # The web browser initiating the action, i.e. Chrome.
     attr_accessor :browser
+
+    # The operating system initiating the action, i.e. Mac OS X.
+    attr_accessor :operating_system
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'time' => :'time',
-        :'operating_system' => :'operating_system',
-        :'ip_address' => :'ip_address',
         :'location' => :'location',
-        :'browser' => :'browser'
+        :'time' => :'time',
+        :'ip_address' => :'ip_address',
+        :'browser' => :'browser',
+        :'operating_system' => :'operating_system'
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'time' => :'String',
-        :'operating_system' => :'String',
-        :'ip_address' => :'String',
         :'location' => :'String',
-        :'browser' => :'String'
+        :'time' => :'String',
+        :'ip_address' => :'String',
+        :'browser' => :'String',
+        :'operating_system' => :'String'
       }
     end
 
@@ -59,24 +59,24 @@ module ApproveAPISwagger
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
 
-      if attributes.has_key?(:'time')
-        self.time = attributes[:'time']
+      if attributes.has_key?(:'location')
+        self.location = attributes[:'location']
       end
 
-      if attributes.has_key?(:'operating_system')
-        self.operating_system = attributes[:'operating_system']
+      if attributes.has_key?(:'time')
+        self.time = attributes[:'time']
       end
 
       if attributes.has_key?(:'ip_address')
         self.ip_address = attributes[:'ip_address']
       end
 
-      if attributes.has_key?(:'location')
-        self.location = attributes[:'location']
-      end
-
       if attributes.has_key?(:'browser')
         self.browser = attributes[:'browser']
+      end
+
+      if attributes.has_key?(:'operating_system')
+        self.operating_system = attributes[:'operating_system']
       end
     end
 
@@ -98,11 +98,11 @@ module ApproveAPISwagger
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          time == o.time &&
-          operating_system == o.operating_system &&
-          ip_address == o.ip_address &&
           location == o.location &&
-          browser == o.browser
+          time == o.time &&
+          ip_address == o.ip_address &&
+          browser == o.browser &&
+          operating_system == o.operating_system
     end
 
     # @see the `==` method
@@ -114,7 +114,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [time, operating_system, ip_address, location, browser].hash
+      [location, time, ip_address, browser, operating_system].hash
     end
 
     # Builds the object from hash
@@ -226,7 +226,5 @@ module ApproveAPISwagger
         value
       end
     end
-
   end
-
 end
