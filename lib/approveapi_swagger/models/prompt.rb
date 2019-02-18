@@ -19,6 +19,9 @@ module ApproveAPISwagger
     # The unix timestamp when this prompt was sent.
     attr_accessor :sent_at
 
+    # Whether the prompt can still be answered.
+    attr_accessor :is_expired
+
     # A unique id for this prompt.
     attr_accessor :id
 
@@ -29,6 +32,7 @@ module ApproveAPISwagger
       {
         :'answer' => :'answer',
         :'sent_at' => :'sent_at',
+        :'is_expired' => :'is_expired',
         :'id' => :'id',
         :'metadata' => :'metadata'
       }
@@ -39,6 +43,7 @@ module ApproveAPISwagger
       {
         :'answer' => :'PromptAnswer',
         :'sent_at' => :'Float',
+        :'is_expired' => :'BOOLEAN',
         :'id' => :'String',
         :'metadata' => :'PromptMetadata'
       }
@@ -60,6 +65,10 @@ module ApproveAPISwagger
         self.sent_at = attributes[:'sent_at']
       end
 
+      if attributes.has_key?(:'is_expired')
+        self.is_expired = attributes[:'is_expired']
+      end
+
       if attributes.has_key?(:'id')
         self.id = attributes[:'id']
       end
@@ -77,6 +86,10 @@ module ApproveAPISwagger
         invalid_properties.push('invalid value for "sent_at", sent_at cannot be nil.')
       end
 
+      if @is_expired.nil?
+        invalid_properties.push('invalid value for "is_expired", is_expired cannot be nil.')
+      end
+
       if @id.nil?
         invalid_properties.push('invalid value for "id", id cannot be nil.')
       end
@@ -88,6 +101,7 @@ module ApproveAPISwagger
     # @return true if the model is valid
     def valid?
       return false if @sent_at.nil?
+      return false if @is_expired.nil?
       return false if @id.nil?
       true
     end
@@ -99,6 +113,7 @@ module ApproveAPISwagger
       self.class == o.class &&
           answer == o.answer &&
           sent_at == o.sent_at &&
+          is_expired == o.is_expired &&
           id == o.id &&
           metadata == o.metadata
     end
@@ -112,7 +127,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [answer, sent_at, id, metadata].hash
+      [answer, sent_at, is_expired, id, metadata].hash
     end
 
     # Builds the object from hash

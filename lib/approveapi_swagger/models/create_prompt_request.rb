@@ -17,33 +17,37 @@ module ApproveAPISwagger
     # The body of the approval request to show the user.
     attr_accessor :body
 
-    # The user to send the approval request to. Can be either an email address or a phone number.
-    attr_accessor :user
-
     # The title of an approval request. Defaults to an empty string.
     attr_accessor :title
 
     # The reject action text. Defaults to 'Reject'.
     attr_accessor :reject_text
 
+    # The number of seconds until this request can no longer be answered.
+    attr_accessor :expires_in
+
+    # If true, the request waits (long-polls) until the user responds to the prompt or more than 10 minutes pass. Defaults to false.
+    attr_accessor :long_poll
+
+    # The user to send the approval request to. Can be either an email address or a phone number.
+    attr_accessor :user
+
     # The approve action text. Defaults to 'Approve'.
     attr_accessor :approve_text
 
     attr_accessor :metadata
 
-    # If true, the request waits (long-polls) until the user responds to the prompt or more than 10 minutes pass. Defaults to false.
-    attr_accessor :long_poll
-
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
         :'body' => :'body',
-        :'user' => :'user',
         :'title' => :'title',
         :'reject_text' => :'reject_text',
+        :'expires_in' => :'expires_in',
+        :'long_poll' => :'long_poll',
+        :'user' => :'user',
         :'approve_text' => :'approve_text',
-        :'metadata' => :'metadata',
-        :'long_poll' => :'long_poll'
+        :'metadata' => :'metadata'
       }
     end
 
@@ -51,12 +55,13 @@ module ApproveAPISwagger
     def self.openapi_types
       {
         :'body' => :'String',
-        :'user' => :'String',
         :'title' => :'String',
         :'reject_text' => :'String',
+        :'expires_in' => :'Float',
+        :'long_poll' => :'BOOLEAN',
+        :'user' => :'String',
         :'approve_text' => :'String',
-        :'metadata' => :'PromptMetadata',
-        :'long_poll' => :'BOOLEAN'
+        :'metadata' => :'PromptMetadata'
       }
     end
 
@@ -72,10 +77,6 @@ module ApproveAPISwagger
         self.body = attributes[:'body']
       end
 
-      if attributes.has_key?(:'user')
-        self.user = attributes[:'user']
-      end
-
       if attributes.has_key?(:'title')
         self.title = attributes[:'title']
       end
@@ -84,16 +85,24 @@ module ApproveAPISwagger
         self.reject_text = attributes[:'reject_text']
       end
 
+      if attributes.has_key?(:'expires_in')
+        self.expires_in = attributes[:'expires_in']
+      end
+
+      if attributes.has_key?(:'long_poll')
+        self.long_poll = attributes[:'long_poll']
+      end
+
+      if attributes.has_key?(:'user')
+        self.user = attributes[:'user']
+      end
+
       if attributes.has_key?(:'approve_text')
         self.approve_text = attributes[:'approve_text']
       end
 
       if attributes.has_key?(:'metadata')
         self.metadata = attributes[:'metadata']
-      end
-
-      if attributes.has_key?(:'long_poll')
-        self.long_poll = attributes[:'long_poll']
       end
     end
 
@@ -126,12 +135,13 @@ module ApproveAPISwagger
       return true if self.equal?(o)
       self.class == o.class &&
           body == o.body &&
-          user == o.user &&
           title == o.title &&
           reject_text == o.reject_text &&
+          expires_in == o.expires_in &&
+          long_poll == o.long_poll &&
+          user == o.user &&
           approve_text == o.approve_text &&
-          metadata == o.metadata &&
-          long_poll == o.long_poll
+          metadata == o.metadata
     end
 
     # @see the `==` method
@@ -143,7 +153,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [body, user, title, reject_text, approve_text, metadata, long_poll].hash
+      [body, title, reject_text, expires_in, long_poll, user, approve_text, metadata].hash
     end
 
     # Builds the object from hash

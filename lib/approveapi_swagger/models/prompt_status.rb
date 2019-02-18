@@ -17,17 +17,22 @@ module ApproveAPISwagger
     # Whether the prompt has been answered or not.
     attr_accessor :is_answered
 
+    # Whether the prompt can still be answered.
+    attr_accessor :is_expired
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'is_answered' => :'is_answered'
+        :'is_answered' => :'is_answered',
+        :'is_expired' => :'is_expired'
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'is_answered' => :'BOOLEAN'
+        :'is_answered' => :'BOOLEAN',
+        :'is_expired' => :'BOOLEAN'
       }
     end
 
@@ -42,6 +47,10 @@ module ApproveAPISwagger
       if attributes.has_key?(:'is_answered')
         self.is_answered = attributes[:'is_answered']
       end
+
+      if attributes.has_key?(:'is_expired')
+        self.is_expired = attributes[:'is_expired']
+      end
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
@@ -52,6 +61,10 @@ module ApproveAPISwagger
         invalid_properties.push('invalid value for "is_answered", is_answered cannot be nil.')
       end
 
+      if @is_expired.nil?
+        invalid_properties.push('invalid value for "is_expired", is_expired cannot be nil.')
+      end
+
       invalid_properties
     end
 
@@ -59,6 +72,7 @@ module ApproveAPISwagger
     # @return true if the model is valid
     def valid?
       return false if @is_answered.nil?
+      return false if @is_expired.nil?
       true
     end
 
@@ -67,7 +81,8 @@ module ApproveAPISwagger
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          is_answered == o.is_answered
+          is_answered == o.is_answered &&
+          is_expired == o.is_expired
     end
 
     # @see the `==` method
@@ -79,7 +94,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [is_answered].hash
+      [is_answered, is_expired].hash
     end
 
     # Builds the object from hash
