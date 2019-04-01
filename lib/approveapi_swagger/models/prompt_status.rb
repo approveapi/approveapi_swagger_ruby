@@ -206,7 +206,5 @@ module ApproveAPISwagger
         value
       end
     end
-
   end
-
 end

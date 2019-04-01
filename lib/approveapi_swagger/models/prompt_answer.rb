@@ -14,19 +14,19 @@ require 'date'
 
 module ApproveAPISwagger
   class PromptAnswer
-    # The unix timestamp when the user answered the prompt.
-    attr_accessor :time
-
     # The user's answer to whether or not they approve this prompt.
     attr_accessor :result
+
+    # The unix timestamp when the user answered the prompt.
+    attr_accessor :time
 
     attr_accessor :metadata
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'time' => :'time',
         :'result' => :'result',
+        :'time' => :'time',
         :'metadata' => :'metadata'
       }
     end
@@ -34,8 +34,8 @@ module ApproveAPISwagger
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'time' => :'Float',
         :'result' => :'BOOLEAN',
+        :'time' => :'Float',
         :'metadata' => :'AnswerMetadata'
       }
     end
@@ -48,12 +48,12 @@ module ApproveAPISwagger
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
 
-      if attributes.has_key?(:'time')
-        self.time = attributes[:'time']
-      end
-
       if attributes.has_key?(:'result')
         self.result = attributes[:'result']
+      end
+
+      if attributes.has_key?(:'time')
+        self.time = attributes[:'time']
       end
 
       if attributes.has_key?(:'metadata')
@@ -65,12 +65,12 @@ module ApproveAPISwagger
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @time.nil?
-        invalid_properties.push('invalid value for "time", time cannot be nil.')
-      end
-
       if @result.nil?
         invalid_properties.push('invalid value for "result", result cannot be nil.')
+      end
+
+      if @time.nil?
+        invalid_properties.push('invalid value for "time", time cannot be nil.')
       end
 
       invalid_properties
@@ -79,8 +79,8 @@ module ApproveAPISwagger
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @time.nil?
       return false if @result.nil?
+      return false if @time.nil?
       true
     end
 
@@ -89,8 +89,8 @@ module ApproveAPISwagger
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          time == o.time &&
           result == o.result &&
+          time == o.time &&
           metadata == o.metadata
     end
 
@@ -103,7 +103,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [time, result, metadata].hash
+      [result, time, metadata].hash
     end
 
     # Builds the object from hash
@@ -215,7 +215,5 @@ module ApproveAPISwagger
         value
       end
     end
-
   end
-
 end

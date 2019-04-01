@@ -14,7 +14,8 @@ require 'date'
 
 module ApproveAPISwagger
   class Prompt
-    attr_accessor :answer
+    # A unique id for this prompt.
+    attr_accessor :id
 
     # The unix timestamp when this prompt was sent.
     attr_accessor :sent_at
@@ -22,18 +23,20 @@ module ApproveAPISwagger
     # Whether the prompt can still be answered.
     attr_accessor :is_expired
 
-    # A unique id for this prompt.
-    attr_accessor :id
+    attr_accessor :request
+
+    attr_accessor :answer
 
     attr_accessor :metadata
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'answer' => :'answer',
+        :'id' => :'id',
         :'sent_at' => :'sent_at',
         :'is_expired' => :'is_expired',
-        :'id' => :'id',
+        :'request' => :'request',
+        :'answer' => :'answer',
         :'metadata' => :'metadata'
       }
     end
@@ -41,10 +44,11 @@ module ApproveAPISwagger
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'answer' => :'PromptAnswer',
+        :'id' => :'String',
         :'sent_at' => :'Float',
         :'is_expired' => :'BOOLEAN',
-        :'id' => :'String',
+        :'request' => :'CreatePromptRequest',
+        :'answer' => :'PromptAnswer',
         :'metadata' => :'PromptMetadata'
       }
     end
@@ -57,8 +61,8 @@ module ApproveAPISwagger
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
 
-      if attributes.has_key?(:'answer')
-        self.answer = attributes[:'answer']
+      if attributes.has_key?(:'id')
+        self.id = attributes[:'id']
       end
 
       if attributes.has_key?(:'sent_at')
@@ -69,8 +73,12 @@ module ApproveAPISwagger
         self.is_expired = attributes[:'is_expired']
       end
 
-      if attributes.has_key?(:'id')
-        self.id = attributes[:'id']
+      if attributes.has_key?(:'request')
+        self.request = attributes[:'request']
+      end
+
+      if attributes.has_key?(:'answer')
+        self.answer = attributes[:'answer']
       end
 
       if attributes.has_key?(:'metadata')
@@ -82,6 +90,10 @@ module ApproveAPISwagger
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @id.nil?
+        invalid_properties.push('invalid value for "id", id cannot be nil.')
+      end
+
       if @sent_at.nil?
         invalid_properties.push('invalid value for "sent_at", sent_at cannot be nil.')
       end
@@ -90,8 +102,8 @@ module ApproveAPISwagger
         invalid_properties.push('invalid value for "is_expired", is_expired cannot be nil.')
       end
 
-      if @id.nil?
-        invalid_properties.push('invalid value for "id", id cannot be nil.')
+      if @request.nil?
+        invalid_properties.push('invalid value for "request", request cannot be nil.')
       end
 
       invalid_properties
@@ -100,9 +112,10 @@ module ApproveAPISwagger
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
+      return false if @id.nil?
       return false if @sent_at.nil?
       return false if @is_expired.nil?
-      return false if @id.nil?
+      return false if @request.nil?
       true
     end
 
@@ -111,10 +124,11 @@ module ApproveAPISwagger
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          answer == o.answer &&
+          id == o.id &&
           sent_at == o.sent_at &&
           is_expired == o.is_expired &&
-          id == o.id &&
+          request == o.request &&
+          answer == o.answer &&
           metadata == o.metadata
     end
 
@@ -127,7 +141,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [answer, sent_at, is_expired, id, metadata].hash
+      [id, sent_at, is_expired, request, answer, metadata].hash
     end
 
     # Builds the object from hash
@@ -239,7 +253,5 @@ module ApproveAPISwagger
         value
       end
     end
-
   end
-
 end

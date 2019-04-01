@@ -14,23 +14,14 @@ require 'date'
 
 module ApproveAPISwagger
   class CreatePromptRequest
+    # The user to send the approval request to. Can be either an email address or a phone number.
+    attr_accessor :user
+
     # The body of the approval request to show the user.
     attr_accessor :body
 
     # The title of an approval request. Defaults to an empty string.
     attr_accessor :title
-
-    # The reject action text. If not specified the reject button will NOT be rendered, and the user will only see an approve action button.
-    attr_accessor :reject_text
-
-    # The number of seconds until this request can no longer be answered.
-    attr_accessor :expires_in
-
-    # If true, the request waits (long-polls) until the user responds to the prompt or more than 10 minutes pass. Defaults to false.
-    attr_accessor :long_poll
-
-    # The user to send the approval request to. Can be either an email address or a phone number.
-    attr_accessor :user
 
     # The approve action text. Defaults to 'Approve'.
     attr_accessor :approve_text
@@ -38,40 +29,58 @@ module ApproveAPISwagger
     # An HTTPS URL to redirect the user to if the prompt is approved. This URL is kept secret until the user is redirected to it.
     attr_accessor :approve_redirect_url
 
+    # The reject action text. If not specified the reject button will NOT be rendered, and the user will only see an approve action button.
+    attr_accessor :reject_text
+
     # An HTTPS URL to redirect the user to if the prompt is rejected. This URL is kept secret until the user is redirected to it.
     attr_accessor :reject_redirect_url
 
+    # If true, the request waits (long-polls) until the user responds to the prompt or more than 10 minutes pass. Defaults to false.
+    attr_accessor :long_poll
+
+    # The number of seconds until this request can no longer be answered.
+    attr_accessor :expires_in
+
     attr_accessor :metadata
+
+    attr_accessor :internal_data
+
+    # Allows calling `create_prompt` multiple times idempotently, such that a prompt is sent at-most once. This key should contain sufficient randomness. Idempotent requests are stored for 24 hours. After that time, the same key will create a new request.
+    attr_accessor :idempotency_key
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
+        :'user' => :'user',
         :'body' => :'body',
         :'title' => :'title',
-        :'reject_text' => :'reject_text',
-        :'expires_in' => :'expires_in',
-        :'long_poll' => :'long_poll',
-        :'user' => :'user',
         :'approve_text' => :'approve_text',
         :'approve_redirect_url' => :'approve_redirect_url',
+        :'reject_text' => :'reject_text',
         :'reject_redirect_url' => :'reject_redirect_url',
-        :'metadata' => :'metadata'
+        :'long_poll' => :'long_poll',
+        :'expires_in' => :'expires_in',
+        :'metadata' => :'metadata',
+        :'internal_data' => :'internal_data',
+        :'idempotency_key' => :'idempotency_key'
       }
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
+        :'user' => :'String',
         :'body' => :'String',
         :'title' => :'String',
-        :'reject_text' => :'String',
-        :'expires_in' => :'Float',
-        :'long_poll' => :'BOOLEAN',
-        :'user' => :'String',
         :'approve_text' => :'String',
         :'approve_redirect_url' => :'String',
+        :'reject_text' => :'String',
         :'reject_redirect_url' => :'String',
-        :'metadata' => :'PromptMetadata'
+        :'long_poll' => :'BOOLEAN',
+        :'expires_in' => :'Float',
+        :'metadata' => :'PromptMetadata',
+        :'internal_data' => :'Hash<String, String>',
+        :'idempotency_key' => :'String'
       }
     end
 
@@ -83,28 +92,16 @@ module ApproveAPISwagger
       # convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h| h[k.to_sym] = v }
 
+      if attributes.has_key?(:'user')
+        self.user = attributes[:'user']
+      end
+
       if attributes.has_key?(:'body')
         self.body = attributes[:'body']
       end
 
       if attributes.has_key?(:'title')
         self.title = attributes[:'title']
-      end
-
-      if attributes.has_key?(:'reject_text')
-        self.reject_text = attributes[:'reject_text']
-      end
-
-      if attributes.has_key?(:'expires_in')
-        self.expires_in = attributes[:'expires_in']
-      end
-
-      if attributes.has_key?(:'long_poll')
-        self.long_poll = attributes[:'long_poll']
-      end
-
-      if attributes.has_key?(:'user')
-        self.user = attributes[:'user']
       end
 
       if attributes.has_key?(:'approve_text')
@@ -115,12 +112,34 @@ module ApproveAPISwagger
         self.approve_redirect_url = attributes[:'approve_redirect_url']
       end
 
+      if attributes.has_key?(:'reject_text')
+        self.reject_text = attributes[:'reject_text']
+      end
+
       if attributes.has_key?(:'reject_redirect_url')
         self.reject_redirect_url = attributes[:'reject_redirect_url']
       end
 
+      if attributes.has_key?(:'long_poll')
+        self.long_poll = attributes[:'long_poll']
+      end
+
+      if attributes.has_key?(:'expires_in')
+        self.expires_in = attributes[:'expires_in']
+      end
+
       if attributes.has_key?(:'metadata')
         self.metadata = attributes[:'metadata']
+      end
+
+      if attributes.has_key?(:'internal_data')
+        if (value = attributes[:'internal_data']).is_a?(Hash)
+          self.internal_data = value
+        end
+      end
+
+      if attributes.has_key?(:'idempotency_key')
+        self.idempotency_key = attributes[:'idempotency_key']
       end
     end
 
@@ -128,12 +147,12 @@ module ApproveAPISwagger
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @body.nil?
-        invalid_properties.push('invalid value for "body", body cannot be nil.')
-      end
-
       if @user.nil?
         invalid_properties.push('invalid value for "user", user cannot be nil.')
+      end
+
+      if @body.nil?
+        invalid_properties.push('invalid value for "body", body cannot be nil.')
       end
 
       invalid_properties
@@ -142,8 +161,8 @@ module ApproveAPISwagger
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @body.nil?
       return false if @user.nil?
+      return false if @body.nil?
       true
     end
 
@@ -152,16 +171,18 @@ module ApproveAPISwagger
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
+          user == o.user &&
           body == o.body &&
           title == o.title &&
-          reject_text == o.reject_text &&
-          expires_in == o.expires_in &&
-          long_poll == o.long_poll &&
-          user == o.user &&
           approve_text == o.approve_text &&
           approve_redirect_url == o.approve_redirect_url &&
+          reject_text == o.reject_text &&
           reject_redirect_url == o.reject_redirect_url &&
-          metadata == o.metadata
+          long_poll == o.long_poll &&
+          expires_in == o.expires_in &&
+          metadata == o.metadata &&
+          internal_data == o.internal_data &&
+          idempotency_key == o.idempotency_key
     end
 
     # @see the `==` method
@@ -173,7 +194,7 @@ module ApproveAPISwagger
     # Calculates hash code according to all attributes.
     # @return [Fixnum] Hash code
     def hash
-      [body, title, reject_text, expires_in, long_poll, user, approve_text, approve_redirect_url, reject_redirect_url, metadata].hash
+      [user, body, title, approve_text, approve_redirect_url, reject_text, reject_redirect_url, long_poll, expires_in, metadata, internal_data, idempotency_key].hash
     end
 
     # Builds the object from hash
@@ -285,7 +306,5 @@ module ApproveAPISwagger
         value
       end
     end
-
   end
-
 end
